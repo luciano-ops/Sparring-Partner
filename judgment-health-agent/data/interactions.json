@@ -1,0 +1,229 @@
+{
+  "interactions": [
+    {
+      "drug_a": "warfarin",
+      "drug_b": "ibuprofen",
+      "also_matches": [["warfarin", "aspirin"], ["warfarin", "naproxen"], ["warfarin", "meloxicam"]],
+      "severity": "major",
+      "mechanism": "NSAIDs inhibit platelet function and can irritate the GI lining",
+      "effect": "Significantly increased risk of bleeding, including GI hemorrhage",
+      "recommendation": "Avoid combination if possible. If necessary, use the lowest NSAID dose for the shortest duration with close INR monitoring."
+    },
+    {
+      "drug_a": "lisinopril",
+      "drug_b": "spironolactone",
+      "also_matches": [["enalapril", "spironolactone"], ["ramipril", "spironolactone"], ["losartan", "spironolactone"]],
+      "severity": "major",
+      "mechanism": "Both drugs increase potassium retention",
+      "effect": "Risk of dangerous hyperkalemia which can cause cardiac arrhythmias",
+      "recommendation": "Monitor potassium levels closely. Consider alternative diuretic. Watch for muscle weakness, palpitations."
+    },
+    {
+      "drug_a": "sertraline",
+      "drug_b": "tramadol",
+      "also_matches": [["fluoxetine", "tramadol"], ["paroxetine", "tramadol"], ["citalopram", "tramadol"]],
+      "severity": "major",
+      "mechanism": "Both increase serotonin levels in the brain",
+      "effect": "Risk of serotonin syndrome — agitation, confusion, rapid heart rate, high blood pressure, muscle rigidity",
+      "recommendation": "Use with extreme caution. Educate patient on serotonin syndrome symptoms. Consider alternative pain management."
+    },
+    {
+      "drug_a": "metformin",
+      "drug_b": "contrast dye",
+      "also_matches": [],
+      "severity": "major",
+      "mechanism": "Contrast media can impair renal function, reducing metformin clearance",
+      "effect": "Risk of lactic acidosis, a rare but potentially fatal condition",
+      "recommendation": "Hold metformin 48 hours before and after contrast procedures. Check kidney function before restarting."
+    },
+    {
+      "drug_a": "simvastatin",
+      "drug_b": "amiodarone",
+      "also_matches": [["lovastatin", "amiodarone"]],
+      "severity": "major",
+      "mechanism": "Amiodarone inhibits CYP3A4, increasing statin blood levels",
+      "effect": "Increased risk of rhabdomyolysis (severe muscle breakdown)",
+      "recommendation": "Limit simvastatin to 20mg daily when combined with amiodarone. Monitor for muscle pain and weakness."
+    },
+    {
+      "drug_a": "methotrexate",
+      "drug_b": "trimethoprim",
+      "also_matches": [["methotrexate", "sulfamethoxazole"]],
+      "severity": "major",
+      "mechanism": "Both drugs interfere with folate metabolism",
+      "effect": "Enhanced methotrexate toxicity — bone marrow suppression, mucositis, kidney damage",
+      "recommendation": "Avoid combination. If unavoidable, monitor blood counts closely and ensure adequate folate supplementation."
+    },
+    {
+      "drug_a": "atorvastatin",
+      "drug_b": "clarithromycin",
+      "also_matches": [["simvastatin", "erythromycin"], ["lovastatin", "clarithromycin"]],
+      "severity": "major",
+      "mechanism": "Macrolide antibiotics inhibit CYP3A4, increasing statin levels",
+      "effect": "Increased risk of rhabdomyolysis and myopathy",
+      "recommendation": "Temporarily hold statin during antibiotic course, or use azithromycin as alternative antibiotic."
+    },
+    {
+      "drug_a": "metoprolol",
+      "drug_b": "verapamil",
+      "also_matches": [["atenolol", "diltiazem"], ["propranolol", "verapamil"]],
+      "severity": "major",
+      "mechanism": "Both drugs slow heart rate and reduce cardiac contractility",
+      "effect": "Risk of severe bradycardia, heart block, and heart failure",
+      "recommendation": "Avoid combination unless under specialist supervision with cardiac monitoring."
+    },
+    {
+      "drug_a": "lithium",
+      "drug_b": "ibuprofen",
+      "also_matches": [["lithium", "naproxen"], ["lithium", "diclofenac"]],
+      "severity": "major",
+      "mechanism": "NSAIDs reduce lithium excretion by the kidneys",
+      "effect": "Elevated lithium levels can cause toxicity — tremor, confusion, seizures",
+      "recommendation": "Avoid NSAIDs if possible. If needed, monitor lithium levels closely. Use acetaminophen for pain."
+    },
+    {
+      "drug_a": "ciprofloxacin",
+      "drug_b": "tizanidine",
+      "also_matches": [],
+      "severity": "major",
+      "mechanism": "Ciprofloxacin strongly inhibits CYP1A2, dramatically increasing tizanidine levels",
+      "effect": "Severe hypotension, excessive sedation",
+      "recommendation": "This combination is contraindicated. Use alternative antibiotic or muscle relaxant."
+    },
+    {
+      "drug_a": "amlodipine",
+      "drug_b": "simvastatin",
+      "also_matches": [],
+      "severity": "moderate",
+      "mechanism": "Amlodipine inhibits CYP3A4, modestly increasing statin levels",
+      "effect": "Slightly increased risk of muscle problems",
+      "recommendation": "Limit simvastatin to 20mg daily. Consider atorvastatin or rosuvastatin as alternatives."
+    },
+    {
+      "drug_a": "omeprazole",
+      "drug_b": "clopidogrel",
+      "also_matches": [["esomeprazole", "clopidogrel"]],
+      "severity": "moderate",
+      "mechanism": "Omeprazole inhibits CYP2C19, reducing conversion of clopidogrel to its active form",
+      "effect": "Reduced antiplatelet effect, potentially increased cardiovascular risk",
+      "recommendation": "Use pantoprazole or famotidine instead of omeprazole if PPI needed with clopidogrel."
+    },
+    {
+      "drug_a": "lisinopril",
+      "drug_b": "ibuprofen",
+      "also_matches": [["enalapril", "naproxen"], ["losartan", "ibuprofen"], ["valsartan", "meloxicam"]],
+      "severity": "moderate",
+      "mechanism": "NSAIDs can reduce the antihypertensive effect and worsen kidney function",
+      "effect": "Blood pressure may rise, kidney function may decline especially in elderly or dehydrated patients",
+      "recommendation": "Use lowest NSAID dose for shortest duration. Monitor blood pressure and kidney function."
+    },
+    {
+      "drug_a": "metformin",
+      "drug_b": "alcohol",
+      "also_matches": [],
+      "severity": "moderate",
+      "mechanism": "Both can independently cause lactic acidosis; alcohol impairs gluconeogenesis",
+      "effect": "Increased risk of lactic acidosis and hypoglycemia",
+      "recommendation": "Limit alcohol consumption. Avoid binge drinking. Monitor blood sugar more frequently."
+    },
+    {
+      "drug_a": "fluoxetine",
+      "drug_b": "metoprolol",
+      "also_matches": [["paroxetine", "metoprolol"]],
+      "severity": "moderate",
+      "mechanism": "Fluoxetine inhibits CYP2D6, increasing metoprolol blood levels",
+      "effect": "Enhanced beta-blocker effects — excessive heart rate slowing, low blood pressure",
+      "recommendation": "Monitor heart rate and blood pressure. May need to reduce beta-blocker dose."
+    },
+    {
+      "drug_a": "levothyroxine",
+      "drug_b": "calcium carbonate",
+      "also_matches": [["levothyroxine", "iron"], ["levothyroxine", "antacids"]],
+      "severity": "moderate",
+      "mechanism": "Calcium, iron, and antacids bind levothyroxine in the gut, reducing absorption",
+      "effect": "Reduced thyroid hormone levels, potentially worsening hypothyroidism",
+      "recommendation": "Separate dosing by at least 4 hours. Take levothyroxine on empty stomach in the morning."
+    },
+    {
+      "drug_a": "prednisone",
+      "drug_b": "ibuprofen",
+      "also_matches": [["dexamethasone", "naproxen"], ["prednisolone", "aspirin"]],
+      "severity": "moderate",
+      "mechanism": "Both are independently associated with GI irritation",
+      "effect": "Significantly increased risk of stomach ulcers and GI bleeding",
+      "recommendation": "Consider GI protection with a PPI if combination is necessary. Monitor for abdominal pain and dark stools."
+    },
+    {
+      "drug_a": "gabapentin",
+      "drug_b": "oxycodone",
+      "also_matches": [["pregabalin", "hydrocodone"], ["gabapentin", "morphine"]],
+      "severity": "moderate",
+      "mechanism": "Both cause CNS depression",
+      "effect": "Enhanced sedation, respiratory depression risk, especially in elderly",
+      "recommendation": "Use lowest effective doses. Educate patient about sedation risk. Avoid driving. Watch for respiratory depression."
+    },
+    {
+      "drug_a": "furosemide",
+      "drug_b": "gentamicin",
+      "also_matches": [["furosemide", "tobramycin"]],
+      "severity": "moderate",
+      "mechanism": "Both drugs can damage the inner ear and kidneys",
+      "effect": "Increased risk of hearing loss and kidney damage",
+      "recommendation": "Monitor kidney function and hearing. Use alternative diuretic if possible during aminoglycoside therapy."
+    },
+    {
+      "drug_a": "warfarin",
+      "drug_b": "acetaminophen",
+      "also_matches": [],
+      "severity": "minor",
+      "mechanism": "Regular acetaminophen use may potentiate warfarin's anticoagulant effect",
+      "effect": "Mildly increased INR with regular use (>2g/day for multiple days)",
+      "recommendation": "Occasional use is generally safe. Monitor INR if using >2g daily for more than a few days."
+    },
+    {
+      "drug_a": "metformin",
+      "drug_b": "cephalexin",
+      "also_matches": [],
+      "severity": "minor",
+      "mechanism": "Cephalexin may compete with metformin for renal tubular secretion",
+      "effect": "Modestly increased metformin levels",
+      "recommendation": "Generally safe. Monitor blood glucose during antibiotic course. Watch for GI side effects."
+    },
+    {
+      "drug_a": "lisinopril",
+      "drug_b": "potassium supplement",
+      "also_matches": [["enalapril", "potassium supplement"], ["losartan", "potassium supplement"]],
+      "severity": "moderate",
+      "mechanism": "ACE inhibitors reduce potassium excretion",
+      "effect": "Risk of hyperkalemia",
+      "recommendation": "Monitor potassium levels regularly. Avoid high-potassium salt substitutes."
+    },
+    {
+      "drug_a": "sertraline",
+      "drug_b": "ibuprofen",
+      "also_matches": [["fluoxetine", "naproxen"], ["citalopram", "aspirin"]],
+      "severity": "moderate",
+      "mechanism": "SSRIs reduce platelet serotonin, impairing clotting; NSAIDs also impair clotting",
+      "effect": "Increased risk of GI bleeding",
+      "recommendation": "Use acetaminophen for pain when possible. If NSAID needed, consider adding a PPI for GI protection."
+    },
+    {
+      "drug_a": "albuterol",
+      "drug_b": "propranolol",
+      "also_matches": [["albuterol", "atenolol"], ["albuterol", "metoprolol"]],
+      "severity": "moderate",
+      "mechanism": "Beta-blockers oppose the bronchodilating effect of albuterol",
+      "effect": "Reduced effectiveness of albuterol, potential bronchospasm",
+      "recommendation": "Use cardioselective beta-blockers (bisoprolol) if beta-blocker is needed in asthma/COPD patients."
+    },
+    {
+      "drug_a": "amoxicillin",
+      "drug_b": "oral contraceptives",
+      "also_matches": [],
+      "severity": "minor",
+      "mechanism": "Theoretical reduction in contraceptive absorption (evidence is weak)",
+      "effect": "Possibly reduced contraceptive effectiveness",
+      "recommendation": "The evidence for this interaction is weak. Use backup contraception if concerned during antibiotic course."
+    }
+  ]
+}

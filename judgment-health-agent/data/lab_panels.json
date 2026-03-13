@@ -1,0 +1,99 @@
+{
+  "panels": {
+    "CBC": {
+      "name": "Complete Blood Count",
+      "tests": [
+        {"name": "WBC", "full_name": "White Blood Cell Count", "unit": "K/uL", "ref_low": 4.5, "ref_high": 11.0, "critical_low": 2.0, "critical_high": 30.0, "what_it_measures": "infection-fighting white blood cells", "high_meaning": "may indicate infection, inflammation, stress response, or rarely leukemia", "low_meaning": "may indicate bone marrow problems, autoimmune conditions, or severe infection"},
+        {"name": "RBC", "full_name": "Red Blood Cell Count", "unit": "M/uL", "ref_low": 4.2, "ref_high": 5.9, "critical_low": 2.5, "critical_high": 7.5, "what_it_measures": "oxygen-carrying red blood cells", "high_meaning": "may indicate dehydration, lung disease, or polycythemia", "low_meaning": "may indicate anemia, bleeding, or nutritional deficiency"},
+        {"name": "Hemoglobin", "full_name": "Hemoglobin", "unit": "g/dL", "ref_low": 12.0, "ref_high": 17.5, "critical_low": 7.0, "critical_high": 20.0, "what_it_measures": "protein in red blood cells that carries oxygen", "high_meaning": "may indicate dehydration or polycythemia", "low_meaning": "indicates anemia — could be from bleeding, nutritional deficiency, or chronic disease"},
+        {"name": "Hematocrit", "full_name": "Hematocrit", "unit": "%", "ref_low": 36.0, "ref_high": 51.0, "critical_low": 20.0, "critical_high": 60.0, "what_it_measures": "percentage of blood made up of red blood cells", "high_meaning": "may indicate dehydration or polycythemia", "low_meaning": "may indicate anemia or blood loss"},
+        {"name": "MCV", "full_name": "Mean Corpuscular Volume", "unit": "fL", "ref_low": 80.0, "ref_high": 100.0, "critical_low": null, "critical_high": null, "what_it_measures": "average size of red blood cells", "high_meaning": "large red blood cells — may indicate B12 or folate deficiency, liver disease, or alcohol use", "low_meaning": "small red blood cells — may indicate iron deficiency or thalassemia"},
+        {"name": "Platelets", "full_name": "Platelet Count", "unit": "K/uL", "ref_low": 150.0, "ref_high": 400.0, "critical_low": 50.0, "critical_high": 1000.0, "what_it_measures": "blood cells that help with clotting", "high_meaning": "may indicate inflammation, iron deficiency, or rarely a bone marrow disorder", "low_meaning": "may increase bleeding risk — could be from medications, infection, or immune conditions"}
+      ],
+      "patterns": [
+        {"name": "Iron Deficiency Anemia", "indicators": {"Hemoglobin": "low", "MCV": "low", "RBC": "low"}, "description": "Low hemoglobin with small red blood cells suggests iron deficiency"},
+        {"name": "B12/Folate Deficiency", "indicators": {"Hemoglobin": "low", "MCV": "high"}, "description": "Low hemoglobin with large red blood cells suggests B12 or folate deficiency"},
+        {"name": "Possible Infection", "indicators": {"WBC": "high"}, "description": "Elevated white blood cells may indicate active infection or inflammation"},
+        {"name": "Pancytopenia", "indicators": {"WBC": "low", "RBC": "low", "Platelets": "low"}, "description": "All cell lines low — warrants prompt evaluation for bone marrow disorders"}
+      ]
+    },
+    "CMP": {
+      "name": "Comprehensive Metabolic Panel",
+      "tests": [
+        {"name": "Glucose", "full_name": "Fasting Glucose", "unit": "mg/dL", "ref_low": 70, "ref_high": 100, "critical_low": 40, "critical_high": 500, "what_it_measures": "blood sugar level", "high_meaning": "may indicate diabetes or prediabetes", "low_meaning": "may indicate hypoglycemia from medication, fasting, or other causes"},
+        {"name": "BUN", "full_name": "Blood Urea Nitrogen", "unit": "mg/dL", "ref_low": 7, "ref_high": 20, "critical_low": null, "critical_high": 100, "what_it_measures": "waste product filtered by kidneys", "high_meaning": "may indicate dehydration, kidney problems, or high protein diet", "low_meaning": "usually not clinically significant"},
+        {"name": "Creatinine", "full_name": "Creatinine", "unit": "mg/dL", "ref_low": 0.7, "ref_high": 1.3, "critical_low": null, "critical_high": 10.0, "what_it_measures": "waste product from muscle metabolism filtered by kidneys", "high_meaning": "may indicate kidney dysfunction", "low_meaning": "may indicate low muscle mass"},
+        {"name": "Sodium", "full_name": "Sodium", "unit": "mEq/L", "ref_low": 136, "ref_high": 145, "critical_low": 120, "critical_high": 160, "what_it_measures": "electrolyte important for fluid balance and nerve function", "high_meaning": "may indicate dehydration", "low_meaning": "may indicate overhydration, certain medications, or hormonal issues"},
+        {"name": "Potassium", "full_name": "Potassium", "unit": "mEq/L", "ref_low": 3.5, "ref_high": 5.0, "critical_low": 2.5, "critical_high": 6.5, "what_it_measures": "electrolyte critical for heart and muscle function", "high_meaning": "can affect heart rhythm — may be from kidney problems or medications", "low_meaning": "can affect heart rhythm — may be from diuretics, vomiting, or diarrhea"},
+        {"name": "Chloride", "full_name": "Chloride", "unit": "mEq/L", "ref_low": 98, "ref_high": 106, "critical_low": 80, "critical_high": 120, "what_it_measures": "electrolyte that helps maintain fluid balance", "high_meaning": "may indicate dehydration or kidney problems", "low_meaning": "may indicate overhydration or prolonged vomiting"},
+        {"name": "CO2", "full_name": "Carbon Dioxide (Bicarbonate)", "unit": "mEq/L", "ref_low": 23, "ref_high": 29, "critical_low": 10, "critical_high": 40, "what_it_measures": "acid-base balance in blood", "high_meaning": "may indicate metabolic alkalosis", "low_meaning": "may indicate metabolic acidosis"},
+        {"name": "Calcium", "full_name": "Calcium", "unit": "mg/dL", "ref_low": 8.5, "ref_high": 10.5, "critical_low": 6.0, "critical_high": 13.0, "what_it_measures": "mineral important for bones, muscles, and nerves", "high_meaning": "may indicate parathyroid problems, vitamin D excess, or cancer", "low_meaning": "may indicate vitamin D deficiency, parathyroid problems, or kidney disease"},
+        {"name": "Total Protein", "full_name": "Total Protein", "unit": "g/dL", "ref_low": 6.0, "ref_high": 8.3, "critical_low": null, "critical_high": null, "what_it_measures": "total protein in blood including albumin and globulins", "high_meaning": "may indicate dehydration, chronic inflammation, or liver disease", "low_meaning": "may indicate malnutrition, liver disease, or kidney disease"},
+        {"name": "Albumin", "full_name": "Albumin", "unit": "g/dL", "ref_low": 3.5, "ref_high": 5.5, "critical_low": 1.5, "critical_high": null, "what_it_measures": "protein made by the liver — helps assess nutrition and liver function", "high_meaning": "usually indicates dehydration", "low_meaning": "may indicate liver disease, kidney disease, or malnutrition"},
+        {"name": "ALT", "full_name": "Alanine Aminotransferase", "unit": "U/L", "ref_low": 7, "ref_high": 56, "critical_low": null, "critical_high": 1000, "what_it_measures": "liver enzyme", "high_meaning": "may indicate liver inflammation, medication effect, or liver disease", "low_meaning": "normal — not clinically significant"},
+        {"name": "AST", "full_name": "Aspartate Aminotransferase", "unit": "U/L", "ref_low": 10, "ref_high": 40, "critical_low": null, "critical_high": 1000, "what_it_measures": "enzyme found in liver, heart, and muscles", "high_meaning": "may indicate liver damage, muscle injury, or heart damage", "low_meaning": "normal — not clinically significant"},
+        {"name": "ALP", "full_name": "Alkaline Phosphatase", "unit": "U/L", "ref_low": 44, "ref_high": 147, "critical_low": null, "critical_high": null, "what_it_measures": "enzyme from liver and bones", "high_meaning": "may indicate bile duct obstruction, bone disorders, or liver disease", "low_meaning": "may indicate malnutrition or zinc deficiency"},
+        {"name": "Bilirubin", "full_name": "Total Bilirubin", "unit": "mg/dL", "ref_low": 0.1, "ref_high": 1.2, "critical_low": null, "critical_high": 15.0, "what_it_measures": "waste product from breakdown of red blood cells", "high_meaning": "may cause jaundice — could indicate liver disease, bile duct obstruction, or hemolysis", "low_meaning": "not clinically significant"}
+      ],
+      "patterns": [
+        {"name": "Kidney Dysfunction", "indicators": {"BUN": "high", "Creatinine": "high"}, "description": "Both BUN and creatinine elevated suggests impaired kidney function"},
+        {"name": "Hepatocellular Injury", "indicators": {"ALT": "high", "AST": "high"}, "description": "Elevated liver enzymes with normal ALP suggests direct liver cell damage"},
+        {"name": "Cholestatic Pattern", "indicators": {"ALP": "high", "Bilirubin": "high"}, "description": "Elevated ALP with bilirubin suggests bile duct obstruction"},
+        {"name": "Diabetes Risk", "indicators": {"Glucose": "high"}, "description": "Elevated fasting glucose warrants A1C testing and diabetes evaluation"},
+        {"name": "Electrolyte Imbalance", "indicators": {"Potassium": "abnormal", "Sodium": "abnormal"}, "description": "Electrolyte abnormalities may need medication review and monitoring"}
+      ]
+    },
+    "Lipid": {
+      "name": "Lipid Panel",
+      "tests": [
+        {"name": "Total Cholesterol", "full_name": "Total Cholesterol", "unit": "mg/dL", "ref_low": 0, "ref_high": 200, "critical_low": null, "critical_high": 400, "what_it_measures": "total cholesterol in blood", "high_meaning": "increased cardiovascular risk", "low_meaning": "not typically a concern unless very low"},
+        {"name": "LDL", "full_name": "LDL Cholesterol (Bad Cholesterol)", "unit": "mg/dL", "ref_low": 0, "ref_high": 100, "critical_low": null, "critical_high": 300, "what_it_measures": "cholesterol that builds up in artery walls", "high_meaning": "increased risk of heart disease and stroke", "low_meaning": "generally favorable"},
+        {"name": "HDL", "full_name": "HDL Cholesterol (Good Cholesterol)", "unit": "mg/dL", "ref_low": 40, "ref_high": 200, "critical_low": null, "critical_high": null, "what_it_measures": "protective cholesterol that helps remove LDL", "high_meaning": "generally protective — higher is better", "low_meaning": "increased cardiovascular risk"},
+        {"name": "Triglycerides", "full_name": "Triglycerides", "unit": "mg/dL", "ref_low": 0, "ref_high": 150, "critical_low": null, "critical_high": 500, "what_it_measures": "fat in blood from food and liver production", "high_meaning": "may increase cardiovascular risk and pancreatitis risk if very high", "low_meaning": "not typically a concern"}
+      ],
+      "patterns": [
+        {"name": "High Cardiovascular Risk", "indicators": {"LDL": "high", "HDL": "low", "Triglycerides": "high"}, "description": "Classic atherogenic lipid profile — warrants aggressive risk management"},
+        {"name": "Metabolic Syndrome Pattern", "indicators": {"Triglycerides": "high", "HDL": "low"}, "description": "This combination is associated with metabolic syndrome and insulin resistance"}
+      ]
+    },
+    "Thyroid": {
+      "name": "Thyroid Panel",
+      "tests": [
+        {"name": "TSH", "full_name": "Thyroid-Stimulating Hormone", "unit": "mIU/L", "ref_low": 0.4, "ref_high": 4.0, "critical_low": 0.01, "critical_high": 50.0, "what_it_measures": "hormone that controls thyroid gland activity", "high_meaning": "thyroid is underactive (hypothyroidism) — brain is telling thyroid to work harder", "low_meaning": "thyroid may be overactive (hyperthyroidism) — brain is telling thyroid to slow down"},
+        {"name": "Free T4", "full_name": "Free Thyroxine", "unit": "ng/dL", "ref_low": 0.8, "ref_high": 1.8, "critical_low": 0.3, "critical_high": 5.0, "what_it_measures": "main hormone produced by thyroid", "high_meaning": "thyroid is producing too much hormone (hyperthyroidism)", "low_meaning": "thyroid is not producing enough hormone (hypothyroidism)"},
+        {"name": "Free T3", "full_name": "Free Triiodothyronine", "unit": "pg/mL", "ref_low": 2.0, "ref_high": 4.4, "critical_low": null, "critical_high": null, "what_it_measures": "active form of thyroid hormone", "high_meaning": "may indicate hyperthyroidism", "low_meaning": "may indicate hypothyroidism or sick euthyroid syndrome"}
+      ],
+      "patterns": [
+        {"name": "Primary Hypothyroidism", "indicators": {"TSH": "high", "Free T4": "low"}, "description": "High TSH with low T4 confirms underactive thyroid"},
+        {"name": "Subclinical Hypothyroidism", "indicators": {"TSH": "high", "Free T4": "normal"}, "description": "Mildly elevated TSH with normal T4 — may need monitoring or treatment depending on level"},
+        {"name": "Hyperthyroidism", "indicators": {"TSH": "low", "Free T4": "high"}, "description": "Low TSH with high T4 confirms overactive thyroid"},
+        {"name": "Subclinical Hyperthyroidism", "indicators": {"TSH": "low", "Free T4": "normal"}, "description": "Low TSH with normal T4 — warrants monitoring"}
+      ]
+    },
+    "A1C": {
+      "name": "Hemoglobin A1C",
+      "tests": [
+        {"name": "HbA1c", "full_name": "Hemoglobin A1C", "unit": "%", "ref_low": 0, "ref_high": 5.7, "critical_low": null, "critical_high": 14.0, "what_it_measures": "average blood sugar over the past 2-3 months", "high_meaning": "5.7-6.4% indicates prediabetes; 6.5% or higher indicates diabetes; above 9% indicates poor diabetes control", "low_meaning": "not typically a concern unless very low with symptoms"}
+      ],
+      "patterns": [
+        {"name": "Well-Controlled Diabetes", "indicators": {"HbA1c": "below_7"}, "description": "A1C under 7% generally indicates good diabetes management"},
+        {"name": "Poorly Controlled Diabetes", "indicators": {"HbA1c": "above_9"}, "description": "A1C above 9% indicates need for medication adjustment and lifestyle changes"}
+      ]
+    },
+    "Urinalysis": {
+      "name": "Urinalysis",
+      "tests": [
+        {"name": "pH", "full_name": "Urine pH", "unit": "", "ref_low": 4.5, "ref_high": 8.0, "critical_low": null, "critical_high": null, "what_it_measures": "acidity or alkalinity of urine", "high_meaning": "may indicate UTI, kidney problems, or diet effects", "low_meaning": "may indicate metabolic acidosis or high-protein diet"},
+        {"name": "Specific Gravity", "full_name": "Specific Gravity", "unit": "", "ref_low": 1.005, "ref_high": 1.030, "critical_low": null, "critical_high": null, "what_it_measures": "how concentrated the urine is", "high_meaning": "concentrated urine — may indicate dehydration", "low_meaning": "dilute urine — may indicate overhydration or kidney issues"},
+        {"name": "Protein", "full_name": "Urine Protein", "unit": "mg/dL", "ref_low": 0, "ref_high": 14, "critical_low": null, "critical_high": null, "what_it_measures": "protein that shouldn't normally be in urine", "high_meaning": "may indicate kidney damage, especially in diabetics", "low_meaning": "normal"},
+        {"name": "Glucose", "full_name": "Urine Glucose", "unit": "mg/dL", "ref_low": 0, "ref_high": 0, "critical_low": null, "critical_high": null, "what_it_measures": "sugar in urine — normally absent", "high_meaning": "may indicate uncontrolled diabetes", "low_meaning": "normal"},
+        {"name": "WBC", "full_name": "Urine White Blood Cells", "unit": "/HPF", "ref_low": 0, "ref_high": 5, "critical_low": null, "critical_high": null, "what_it_measures": "white blood cells in urine", "high_meaning": "suggests urinary tract infection or inflammation", "low_meaning": "normal"},
+        {"name": "Bacteria", "full_name": "Bacteria", "unit": "", "ref_low": 0, "ref_high": 0, "critical_low": null, "critical_high": null, "what_it_measures": "bacteria in urine — normally absent in clean catch", "high_meaning": "suggests urinary tract infection", "low_meaning": "normal"}
+      ],
+      "patterns": [
+        {"name": "Urinary Tract Infection", "indicators": {"WBC": "high", "Bacteria": "present"}, "description": "White cells and bacteria in urine are consistent with UTI"},
+        {"name": "Diabetic Nephropathy Screen", "indicators": {"Protein": "high", "Glucose": "high"}, "description": "Protein and glucose in urine of diabetic patient warrants kidney function evaluation"}
+      ]
+    }
+  }
+}

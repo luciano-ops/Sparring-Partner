@@ -1,0 +1,90 @@
+[
+  {
+    "id": "query_0001",
+    "research_type": "Technical_Deep_Dive",
+    "domain": "AI/ML",
+    "complexity": "Complex",
+    "query": "What are the current approaches to protein folding prediction and how do they compare in terms of accuracy, computational cost, and applicability to drug discovery?",
+    "sub_questions": [
+      "How does AlphaFold3 compare to RoseTTAFold and ESMFold in terms of accuracy on CASP benchmarks?",
+      "What are the computational requirements for running these models at scale?",
+      "How are pharmaceutical companies integrating these tools into their drug discovery pipelines?",
+      "What are the known limitations of current protein structure prediction for intrinsically disordered proteins?"
+    ],
+    "expected_sources": 8,
+    "time_sensitivity": "Current",
+    "requester_persona": "Academic",
+    "depth_preference": "Exhaustive",
+    "edge_case_tags": ["highly_technical", "rapidly_evolving"]
+  },
+  {
+    "id": "query_0002",
+    "research_type": "Market_Analysis",
+    "domain": "Finance",
+    "complexity": "Moderate",
+    "query": "What is the current state of the global electric vehicle battery supply chain, and which companies are best positioned for the next 5 years?",
+    "sub_questions": [
+      "What is the current market share breakdown among CATL, LG Energy, Panasonic, and BYD?",
+      "How are solid-state battery developments likely to disrupt the current supply chain?",
+      "What are the geopolitical risks around lithium and cobalt sourcing?"
+    ],
+    "expected_sources": 6,
+    "time_sensitivity": "Current",
+    "requester_persona": "Analyst",
+    "depth_preference": "Detailed",
+    "edge_case_tags": ["rapidly_evolving"]
+  },
+  {
+    "id": "query_0003",
+    "research_type": "Fact_Checking",
+    "domain": "Healthcare",
+    "complexity": "Expert_Level",
+    "query": "Are GLP-1 receptor agonists like semaglutide associated with increased risk of thyroid cancer in humans, and what does the clinical evidence actually show versus media claims?",
+    "sub_questions": [
+      "What did the original rodent studies show and how translatable are those findings to humans?",
+      "What do the post-marketing surveillance data from the FDA and EMA indicate?",
+      "How do media reports compare to the actual clinical trial data?",
+      "What are endocrinologists' consensus positions on this risk?"
+    ],
+    "expected_sources": 10,
+    "time_sensitivity": "Current",
+    "requester_persona": "Journalist",
+    "depth_preference": "Exhaustive",
+    "edge_case_tags": ["contradictory_sources", "misinformation_heavy"]
+  },
+  {
+    "id": "query_0004",
+    "research_type": "Comparative_Analysis",
+    "domain": "Climate",
+    "complexity": "Simple",
+    "query": "How do the major carbon capture technologies compare in terms of cost per ton, scalability, and current deployment status?",
+    "sub_questions": [
+      "What are the leading direct air capture companies and their cost projections?",
+      "How does point-source capture compare to direct air capture economically?",
+      "Which governments are providing the most funding for carbon capture?"
+    ],
+    "expected_sources": 5,
+    "time_sensitivity": "Evergreen",
+    "requester_persona": "Student",
+    "depth_preference": "Overview",
+    "edge_case_tags": ["politically_charged"]
+  },
+  {
+    "id": "query_0005",
+    "research_type": "Trend_Research",
+    "domain": "Geopolitics",
+    "complexity": "Complex",
+    "query": "What are the emerging patterns in semiconductor export controls and how are they reshaping global chip manufacturing alliances?",
+    "sub_questions": [
+      "How effective have US export controls on advanced chips to China been so far?",
+      "What alternative supply chains is China building domestically?",
+      "How are TSMC, Samsung, and Intel positioning themselves geopolitically?",
+      "What role are the Netherlands and Japan playing in the export control regime?"
+    ],
+    "expected_sources": 8,
+    "time_sensitivity": "Breaking",
+    "requester_persona": "Executive",
+    "depth_preference": "Detailed",
+    "edge_case_tags": ["politically_charged", "rapidly_evolving"]
+  }
+]

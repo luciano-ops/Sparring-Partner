@@ -39,3 +39,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Python
+__pycache__/
+*.pyc
+
+# Agent generated output
+**/output/*.json
+**/profiles/patient_profiles.json
+
+# Old/archive
+_old/
