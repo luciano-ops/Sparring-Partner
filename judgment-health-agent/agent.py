@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import json
 import time
-import anthropic
 from pathlib import Path
 from models import Trace, ConversationTurn, ToolCall, AgentMode
 from tools import TOOL_DEFINITIONS, execute_tool

@@ -10,10 +10,10 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import anthropic
 
-from models import CaseProfile, CaseType, Complexity, CommunicationStyle, Urgency
+from models import CaseProfile, CaseType
 
 _client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY", ""))
-MODEL = "claude-sonnet-4-20250514"
+MODEL = "claude-haiku-4-5-20251001"
 
 JURISDICTIONS = [
     "California",
@@ -77,7 +77,7 @@ Each profile must be a JSON object with these exact fields:
 - complexity: one of ["Routine", "Moderate", "Complex", "High_Stakes"]
 - legal_issue: a specific, realistic legal problem (1-2 sentences)
 - key_facts: array of 4-7 relevant facts the client knows
-- documents: array of 1-3 documents, each with: title, doc_type (contract|filing|correspondence|statute), summary, key_clauses (array of 1-3 strings), red_flags (array of 0-2 strings)
+- documents: array of 1-3 documents, each with: title, doc_type (contract|filing|correspondence|statute), summary
 - opposing_party: realistic company or person name
 - communication_style: one of ["Executive_Brief", "Detail_Oriented", "Anxious", "Adversarial", "Cooperative"]
 - urgency: one of ["Immediate", "This_Week", "Standard", "Advisory"]

@@ -8,10 +8,7 @@ import json
 import os
 import random
 import sys
-import time
-import hashlib
 import uuid
-import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import streamlit as st
@@ -30,7 +27,6 @@ from models import (
     TimeSensitivity,
     RequesterPersona,
     DepthPreference,
-    ResearchTrace,
 )
 from agent import ResearchAgent
 from tools import token_tracker
@@ -465,7 +461,6 @@ def render_distribution_card(title: str, items: list[str], key_prefix: str):
         diff = 100 - sum(st.session_state[state_key].values())
         st.session_state[state_key][items[0]] += diff
 
-    cols = st.columns([3, 8, 2, 1])
     updated = {}
 
     for item in items:
@@ -620,7 +615,6 @@ def generate_profile(
         time_sensitivity=random.choice(_TIME_OPTIONS),
         requester_persona=_PERSONA_MAP[persona_name],
         depth_preference=random.choice(_DEPTH_OPTIONS),
-        key_constraints=[],
     )
 
 

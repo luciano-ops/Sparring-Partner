@@ -1,9 +1,7 @@
 """Simulated research tools using Claude Haiku for realistic content generation."""
 
 import json
-import os
 import re
-import time
 
 import anthropic
 

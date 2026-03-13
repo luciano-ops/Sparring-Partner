@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import hashlib
 import os
-from typing import Any
 
 from google import genai
 
@@ -143,8 +142,11 @@ class ClientSimulator:
 
     def respond(self, agent_message: str) -> str:
         """Generate client's response to the agent's message."""
+        # Truncate long agent responses — client doesn't need full legal
+        # citations and analysis to respond in character, saves Gemini tokens.
+        truncated = agent_message[:800] if len(agent_message) > 800 else agent_message
         self.history.append(
-            {"role": "user", "parts": [{"text": f"The attorney says:\n\n{agent_message}\n\nRespond in character."}]}
+            {"role": "user", "parts": [{"text": f"The attorney says:\n\n{truncated}\n\nRespond in character."}]}
         )
 
         response = _gemini_client.models.generate_content(

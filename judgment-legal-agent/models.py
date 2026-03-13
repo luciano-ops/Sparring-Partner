@@ -135,14 +135,3 @@ class ConversationTurn(BaseModel):
     role: str  # "client" | "agent"
     content: str
     tool_calls: list[ToolCall] = Field(default_factory=list)
-
-
-class ConversationTrace(BaseModel):
-    profile_id: str
-    case_type: str
-    jurisdiction: str
-    complexity: str
-    turns: list[ConversationTurn]
-    tool_calls: list[ToolCall]
-    total_tokens: int = 0
-    duration: float = 0.0

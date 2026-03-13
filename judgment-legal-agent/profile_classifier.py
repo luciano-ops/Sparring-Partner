@@ -3,7 +3,7 @@
 Each of the 210 pre-generated profiles gets tagged with:
   - legal_domain:       Contract & Commercial, Employment & Labor, IP & Technology,
                         Regulatory & Compliance, Corporate & M&A, Litigation & Dispute
-  - client_sentiment:   Frustrated, Anxious, Reassured, Skeptical
+  - client_sentiment:   Anxious, Confused, Frustrated, Neutral, Reassured
   - interaction_type:   Legal Consultation, Document Review, Risk Assessment,
                         Research Request, Compliance Check
 

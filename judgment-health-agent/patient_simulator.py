@@ -10,6 +10,8 @@ Requires GEMINI_API_KEY environment variable.
 
 from __future__ import annotations
 
+import hashlib
+
 from google import genai
 from models import PatientProfile
 
@@ -50,10 +52,8 @@ def _build_patient_system_prompt(profile: PatientProfile) -> str:
     style = style_instructions.get(profile.communication_style.value, "Answer naturally.")
 
     # Assign an emotional arc based on profile hash for determinism
-    import hashlib
     arc_seed = int(hashlib.md5(profile.id.encode()).hexdigest(), 16) % 100
     if arc_seed < 25:
-        emotional_arc = "FRUSTRATED"
         arc_instruction = (
             "EMOTIONAL ARC — FRUSTRATED:\n"
             "You are irritated from the start and it only gets worse. You feel like "
@@ -64,7 +64,6 @@ def _build_patient_system_prompt(profile: PatientProfile) -> str:
             "still annoyed — 'Fine, I'll try that I guess.'"
         )
     elif arc_seed < 50:
-        emotional_arc = "ANXIOUS"
         arc_instruction = (
             "EMOTIONAL ARC — ANXIOUS:\n"
             "You are deeply worried and it escalates as the conversation goes on. "
@@ -75,7 +74,6 @@ def _build_patient_system_prompt(profile: PatientProfile) -> str:
             "You do NOT calm down. End the conversation still worried."
         )
     elif arc_seed < 75:
-        emotional_arc = "REASSURED"
         arc_instruction = (
             "EMOTIONAL ARC — REASSURED:\n"
             "You start worried or uncertain, but the assistant's responses genuinely "
@@ -85,7 +83,6 @@ def _build_patient_system_prompt(profile: PatientProfile) -> str:
             "this really helped.' Express warmth and appreciation clearly."
         )
     else:
-        emotional_arc = "STILL_ANXIOUS"
         arc_instruction = (
             "EMOTIONAL ARC — STILL ANXIOUS:\n"
             "You start anxious and remain anxious throughout, but it's a quieter anxiety. "

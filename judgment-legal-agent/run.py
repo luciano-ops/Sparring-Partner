@@ -20,15 +20,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from instrumentation import tracer
-from models import CaseProfile
+from models import CaseProfile, Complexity
 from agent import LegalAgent
 from client_simulator import ClientSimulator
 
 OUTPUT_DIR = Path(__file__).parent / "output"
 PROFILES_PATH = Path(__file__).parent / "profiles" / "case_profiles.json"
-
-MIN_TURNS = 6
-MAX_TURNS = 10
 
 
 class ProgressBar:
@@ -96,17 +93,19 @@ class ProgressBar:
 
 
 def _pick_max_turns(profile: CaseProfile) -> int:
-    """Pick turn count. Minimum 4 turns to give the agent time to use tools.
-    10% = 4, 40% = 5-6, 35% = 7-8, 15% = 9-10."""
-    roll = random.random()
-    if roll < 0.10:
-        return 4
-    elif roll < 0.50:
-        return random.choice([5, 6])
-    elif roll < 0.85:
-        return random.choice([7, 8])
-    else:
-        return random.choice([9, 10])
+    """Pick turn count based on case complexity.
+
+    Routine cases resolve faster; High_Stakes cases need more turns.
+    This avoids wasting tokens on long conversations for simple cases.
+    """
+    if profile.complexity == Complexity.Routine:
+        return random.choice([4, 4, 5])
+    elif profile.complexity == Complexity.Moderate:
+        return random.choice([5, 6, 6])
+    elif profile.complexity == Complexity.Complex:
+        return random.choice([6, 7, 8])
+    else:  # High_Stakes
+        return random.choice([7, 8, 9, 10])
 
 
 @tracer.observe(span_type="function")
@@ -389,7 +388,6 @@ def main():
     parser.add_argument("--model", type=str, default="claude-sonnet-4-20250514", help="Claude model to use")
     parser.add_argument("--concurrency", type=int, default=1, help="Concurrent conversations (default: 1)")
     parser.add_argument("--verbose", action="store_true", help="Print conversation details")
-    parser.add_argument("--seed", type=int, default=-1, help="Random seed (-1 = random each run)")
     args = parser.parse_args()
 
     import os

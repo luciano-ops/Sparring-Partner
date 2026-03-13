@@ -14,7 +14,6 @@ Classification is deterministic and cached after first call.
 from __future__ import annotations
 
 import hashlib
-import re
 from collections import defaultdict
 from models import PatientProfile
 
@@ -99,7 +98,7 @@ def classify_sentiment(profile: PatientProfile) -> str:
     if arc_seed < 25:
         return "Frustrated"
     elif arc_seed < 50:
-        return "Neutral"
+        return "Anxious"
     elif arc_seed < 75:
         return "Reassured"
     else:

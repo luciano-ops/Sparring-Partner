@@ -115,7 +115,7 @@ class LegalAgent:
             t0 = time.time()
             response = self.client.messages.create(
                 model=self.model,
-                max_tokens=4096,
+                max_tokens=2048,
                 system=self.system_prompt,
                 tools=TOOL_SCHEMAS,
                 messages=self.messages,
@@ -149,7 +149,7 @@ class LegalAgent:
                         tool_results.append({
                             "type": "tool_result",
                             "tool_use_id": block.id,
-                            "content": tool_result,
+                            "content": tool_result[:1500],
                         })
 
                 self.messages.append({"role": "user", "content": tool_results})
@@ -169,12 +169,36 @@ class LegalAgent:
                         tool_calls=turn_tool_calls,
                     )
                 )
+
+                # Compress old tool results in history to save tokens.
+                # The agent already digested these into its responses —
+                # keeping full results just inflates future API calls.
+                self._compress_old_tool_results()
+
                 return text
 
         # Safety fallback
         fallback = "I need to consult with senior partners on this matter. Let me prepare a more detailed analysis and follow up with you."
         self.turns.append(ConversationTurn(role="agent", content=fallback))
         return fallback
+
+    def _compress_old_tool_results(self):
+        """Truncate tool results from previous turns to save input tokens.
+
+        Keeps the last 2 messages intact (current turn) and compresses
+        tool_result content in all older messages to a short summary.
+        The agent already incorporated these results into its prior responses.
+        """
+        # Skip the last 2 messages (the assistant response we just got + its
+        # preceding user message or tool results). Compress everything older.
+        cutoff = max(0, len(self.messages) - 3)
+        for msg in self.messages[:cutoff]:
+            if msg["role"] == "user" and isinstance(msg["content"], list):
+                for item in msg["content"]:
+                    if isinstance(item, dict) and item.get("type") == "tool_result":
+                        content = item["content"]
+                        if len(content) > 200:
+                            item["content"] = content[:200] + "...[truncated]"
 
     def is_wrapping_up(self, response: str) -> bool:
         """Heuristic: detect if the agent is concluding the consultation."""

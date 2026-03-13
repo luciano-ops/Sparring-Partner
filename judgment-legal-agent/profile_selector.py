@@ -13,7 +13,6 @@ from __future__ import annotations
 import random
 from collections import defaultdict
 from models import CaseProfile
-from profile_classifier import classify_all
 
 
 def select_profiles(

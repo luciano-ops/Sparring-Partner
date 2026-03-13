@@ -312,7 +312,7 @@ const GROUPS = {
   },
   patient_sentiment: {
     title: "Patient Sentiment",
-    labels: ["Frustrated","Neutral","Reassured","Still Anxious"],
+    labels: ["Anxious","Frustrated","Reassured","Still Anxious"],
   },
   interaction_type: {
     title: "Interaction Type",

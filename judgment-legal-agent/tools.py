@@ -21,16 +21,27 @@ from models import (
 
 HAIKU_MODEL = "claude-haiku-4-5-20251001"
 
+# Per-tool max output tokens — sized to typical output + 30% headroom.
+# Prevents Haiku from generating more than the agent actually uses.
+TOOL_MAX_TOKENS: dict[str, int] = {
+    "search_case_law": 768,
+    "search_statutes": 768,
+    "analyze_contract_clause": 512,
+    "check_compliance": 512,
+    "calculate_liability": 512,
+    "draft_memo": 1536,
+}
+
 # Single wrapped client for all tool LLM calls — matches health agent pattern.
 # Creating a new wrapped client per call corrupts the Judgment trace context.
 _haiku_client = get_wrapped_client()
 
 
-def _llm_generate(system: str, prompt: str) -> str:
+def _llm_generate(system: str, prompt: str, max_tokens: int = 1024) -> str:
     """Call Claude Haiku to generate simulated legal content."""
     resp = _haiku_client.messages.create(
         model=HAIKU_MODEL,
-        max_tokens=2048,
+        max_tokens=max_tokens,
         system=system,
         messages=[{"role": "user", "content": prompt}],
     )
@@ -182,13 +193,13 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
 def _search_case_law(query: str, jurisdiction: str) -> list[dict]:
     system = (
         "You are a legal research database. Return ONLY valid JSON — no markdown fences. "
-        "Generate 3 realistic but fictional case law results as a JSON array. "
+        "Generate 2 realistic but fictional case law results as a JSON array. "
         "Each case should have: case_name, citation (realistic format like '123 F.3d 456'), "
-        "year (2005-2024), court, holding (2-3 sentences), relevance ('supports'|'opposes'|'distinguishable'), "
-        "key_quote (one sentence). Mix supportive and opposing cases. Make them feel like real legal research."
+        "year (2005-2024), court, holding (1-2 sentences), relevance ('supports'|'opposes'|'distinguishable'), "
+        "key_quote (one sentence). One supporting and one opposing. Make them feel like real legal research."
     )
     prompt = f"Find case law for: {query}\nJurisdiction: {jurisdiction}"
-    raw = _llm_generate(system, prompt)
+    raw = _llm_generate(system, prompt, max_tokens=TOOL_MAX_TOKENS["search_case_law"])
     try:
         cases = json.loads(raw)
         return [CaseResult(**c).model_dump() for c in cases]
@@ -223,7 +234,7 @@ def _search_statutes(query: str, jurisdiction: str) -> list[dict]:
         "Make them realistic for the jurisdiction."
     )
     prompt = f"Find statutes for: {query}\nJurisdiction: {jurisdiction}"
-    raw = _llm_generate(system, prompt)
+    raw = _llm_generate(system, prompt, max_tokens=TOOL_MAX_TOKENS["search_statutes"])
     try:
         statutes = json.loads(raw)
         return [StatuteResult(**s).model_dump() for s in statutes]
@@ -252,15 +263,16 @@ def _analyze_contract_clause(clause_text: str, analysis_type: str) -> dict:
     system = (
         "You are a contract analysis engine. Return ONLY valid JSON — no markdown fences. "
         "Analyze the given clause and return a JSON object with: "
-        "clause_text (echo back), analysis_type (echo back), "
         "risk_level ('low'|'medium'|'high'|'critical'), "
         "issues_found (array of 2-4 strings), recommendations (array of 2-3 strings), "
         "enforceability_notes (1-2 sentences). Be thorough and realistic."
     )
     prompt = f"Analyze this clause ({analysis_type}):\n{clause_text}"
-    raw = _llm_generate(system, prompt)
+    raw = _llm_generate(system, prompt, max_tokens=TOOL_MAX_TOKENS["analyze_contract_clause"])
     try:
         result = json.loads(raw)
+        result["clause_text"] = clause_text
+        result["analysis_type"] = analysis_type
         return ContractAnalysis(**result).model_dump()
     except (json.JSONDecodeError, Exception):
         start = raw.find("{")
@@ -268,6 +280,8 @@ def _analyze_contract_clause(clause_text: str, analysis_type: str) -> dict:
         if start >= 0 and end > start:
             try:
                 result = json.loads(raw[start:end])
+                result["clause_text"] = clause_text
+                result["analysis_type"] = analysis_type
                 return ContractAnalysis(**result).model_dump()
             except Exception:
                 pass
@@ -284,15 +298,16 @@ def _analyze_contract_clause(clause_text: str, analysis_type: str) -> dict:
 def _check_compliance(regulation: str, facts: dict) -> dict:
     system = (
         "You are a compliance checking engine. Return ONLY valid JSON — no markdown fences. "
-        "Return a JSON object with: regulation (echo back), "
+        "Return a JSON object with: "
         "status ('compliant'|'non_compliant'|'partially_compliant'|'unclear'), "
         "gaps (array of 2-4 strings), remediation_steps (array of 2-3 strings), "
         "risk_if_unaddressed (1-2 sentences). Be specific and actionable."
     )
     prompt = f"Check compliance with: {regulation}\nFacts: {json.dumps(facts)}"
-    raw = _llm_generate(system, prompt)
+    raw = _llm_generate(system, prompt, max_tokens=TOOL_MAX_TOKENS["check_compliance"])
     try:
         result = json.loads(raw)
+        result["regulation"] = regulation
         return ComplianceResult(**result).model_dump()
     except (json.JSONDecodeError, Exception):
         start = raw.find("{")
@@ -300,6 +315,7 @@ def _check_compliance(regulation: str, facts: dict) -> dict:
         if start >= 0 and end > start:
             try:
                 result = json.loads(raw[start:end])
+                result["regulation"] = regulation
                 return ComplianceResult(**result).model_dump()
             except Exception:
                 pass
@@ -325,13 +341,13 @@ def _draft_memo(topic: str, key_points: list[str], format: str) -> str:
     prompt = f"Topic: {topic}\nKey points to address:\n" + "\n".join(
         f"- {p}" for p in key_points
     )
-    return _llm_generate(system, prompt)
+    return _llm_generate(system, prompt, max_tokens=TOOL_MAX_TOKENS["draft_memo"])
 
 
 def _calculate_liability(claim_type: str, facts: dict) -> dict:
     system = (
         "You are a liability assessment engine. Return ONLY valid JSON — no markdown fences. "
-        "Return a JSON object with: claim_type (echo back), "
+        "Return a JSON object with: "
         "exposure_low (integer, dollars), exposure_high (integer, dollars), "
         "key_factors (array of 3-4 strings), "
         "risk_assessment (2-3 sentences), "
@@ -339,9 +355,10 @@ def _calculate_liability(claim_type: str, facts: dict) -> dict:
         "aggravating_factors (array of 2-3 strings). Be realistic about dollar amounts."
     )
     prompt = f"Calculate liability for: {claim_type}\nFacts: {json.dumps(facts)}"
-    raw = _llm_generate(system, prompt)
+    raw = _llm_generate(system, prompt, max_tokens=TOOL_MAX_TOKENS["calculate_liability"])
     try:
         result = json.loads(raw)
+        result["claim_type"] = claim_type
         return LiabilityEstimate(**result).model_dump()
     except (json.JSONDecodeError, Exception):
         start = raw.find("{")
@@ -349,6 +366,7 @@ def _calculate_liability(claim_type: str, facts: dict) -> dict:
         if start >= 0 and end > start:
             try:
                 result = json.loads(raw[start:end])
+                result["claim_type"] = claim_type
                 return LiabilityEstimate(**result).model_dump()
             except Exception:
                 pass
@@ -405,6 +423,6 @@ def execute_tool(name: str, inputs: dict[str, Any]) -> str:
         result = handler(**inputs)
         if isinstance(result, str):
             return result
-        return json.dumps(result, indent=2)
+        return json.dumps(result)
     except Exception as e:
         return json.dumps({"error": f"Tool execution failed: {str(e)}"})
