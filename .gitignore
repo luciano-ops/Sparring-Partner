@@ -50,3 +50,15 @@ __pycache__/
 
 # Old/archive
 _old/
+
+# Other projects (keep local only)
+/agents/
+/deep-research-agent/
+/health-agent/
+/judgment-health-agent/
+/judgment-legal-agent/
+/legal-agent/
+/internal-agents/
+/internal-tooling/
+health-agent-modal-prompt.md
+proposal-countdown.html
