@@ -11,57 +11,81 @@ import { getRandomRole, BuyerRole } from "@/lib/roles";
 export default function Home() {
   const [companyName, setCompanyName] = useState("");
   const [submittedName, setSubmittedName] = useState("");
-  const [rawText, setRawText] = useState("");
+  const [buyerText, setBuyerText] = useState("");
+  const [sellerText, setSellerText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isStreaming, setIsStreaming] = useState(false);
+  const [isBuyerStreaming, setIsBuyerStreaming] = useState(false);
+  const [isSellerStreaming, setIsSellerStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [buyerRole, setBuyerRole] = useState<BuyerRole | null>(null);
+
+  const streamSide = useCallback(
+    async (
+      name: string,
+      side: "buyer" | "seller",
+      setText: (fn: (prev: string) => string) => void,
+      setStreaming: (v: boolean) => void
+    ) => {
+      setStreaming(true);
+      try {
+        const response = await fetch("/api/generate-briefing", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ companyName: name, side }),
+        });
+
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          throw new Error(
+            data.error || `Request failed with status ${response.status}`
+          );
+        }
+
+        const reader = response.body?.getReader();
+        if (!reader) throw new Error("No response body");
+
+        const decoder = new TextDecoder();
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const chunk = decoder.decode(value, { stream: true });
+          setText((prev) => prev + chunk);
+        }
+      } catch (err) {
+        if (side === "buyer") {
+          setError(
+            err instanceof Error ? err.message : "An unexpected error occurred"
+          );
+        }
+      } finally {
+        setStreaming(false);
+      }
+    },
+    []
+  );
 
   const handleGenerate = useCallback(async () => {
     const name = companyName.trim();
     if (!name) return;
 
     setError(null);
-    setRawText("");
+    setBuyerText("");
+    setSellerText("");
     setIsLoading(true);
-    setIsStreaming(true);
     setSubmittedName(name);
     setBuyerRole(getRandomRole());
 
-    try {
-      const response = await fetch("/api/generate-briefing", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ companyName: name }),
-      });
+    // Fire both streams in parallel
+    await Promise.all([
+      streamSide(name, "buyer", setBuyerText, setIsBuyerStreaming),
+      streamSide(name, "seller", setSellerText, setIsSellerStreaming),
+    ]);
 
-      if (!response.ok) {
-        const data = await response.json().catch(() => ({}));
-        throw new Error(
-          data.error || `Request failed with status ${response.status}`
-        );
-      }
+    setIsLoading(false);
+  }, [companyName, streamSide]);
 
-      const reader = response.body?.getReader();
-      if (!reader) throw new Error("No response body");
-
-      const decoder = new TextDecoder();
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        const chunk = decoder.decode(value, { stream: true });
-        setRawText((prev) => prev + chunk);
-      }
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "An unexpected error occurred"
-      );
-    } finally {
-      setIsLoading(false);
-      setIsStreaming(false);
-    }
-  }, [companyName]);
+  const hasContent = buyerText || sellerText;
+  const isStreaming = isBuyerStreaming || isSellerStreaming;
 
   return (
     <main className="min-h-screen bg-background">
@@ -83,14 +107,16 @@ export default function Home() {
         </div>
       )}
 
-      {/* Loading skeleton -- only show before stream starts */}
-      {isLoading && !rawText && !error && <LoadingState />}
+      {/* Loading skeleton -- only show before any stream starts */}
+      {isLoading && !hasContent && !error && <LoadingState />}
 
       {/* Briefing content */}
-      {(rawText || isStreaming) && (
+      {(hasContent || isStreaming) && (
         <BriefingCard
-          rawText={rawText}
-          isStreaming={isStreaming}
+          buyerText={buyerText}
+          sellerText={sellerText}
+          isBuyerStreaming={isBuyerStreaming}
+          isSellerStreaming={isSellerStreaming}
           companyName={submittedName}
           buyerRole={buyerRole}
         />

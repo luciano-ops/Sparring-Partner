@@ -1,11 +1,11 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { SYSTEM_PROMPT } from "@/lib/prompts";
+import { BUYER_PROMPT, SELLER_PROMPT } from "@/lib/prompts";
 
 const client = new Anthropic();
 
 export async function POST(request: Request) {
   try {
-    const { companyName } = await request.json();
+    const { companyName, side } = await request.json();
 
     if (!companyName || typeof companyName !== "string") {
       return Response.json(
@@ -14,18 +14,28 @@ export async function POST(request: Request) {
       );
     }
 
-    // Use the raw streaming API to get the underlying response object,
-    // which lets us catch auth/validation errors before piping the stream.
+    const isBuyer = side === "buyer";
+    const systemPrompt = isBuyer ? BUYER_PROMPT : SELLER_PROMPT;
+    const userMessage = isBuyer
+      ? `Research and generate a Buyer Card for: ${companyName.trim()}`
+      : `Research and generate a Seller Card for: ${companyName.trim()}`;
+
     const response = await client.messages.create({
       model: "claude-opus-4-6",
       max_tokens: 16000,
-      thinking: { type: "adaptive" },
       stream: true,
-      system: SYSTEM_PROMPT,
+      system: systemPrompt,
+      tools: [
+        {
+          type: "web_search_20250305",
+          name: "web_search",
+          max_uses: 10,
+        },
+      ],
       messages: [
         {
           role: "user",
-          content: `Generate a detailed Buyer Briefing Card for: ${companyName.trim()}`,
+          content: `${userMessage}\n\nSearch the web for current information about this company — their product, funding, team, AI/agent usage, tech stack, and recent news. Use real data to make the briefing as accurate and specific as possible.`,
         },
       ],
     });
@@ -45,7 +55,6 @@ export async function POST(request: Request) {
           controller.close();
         } catch (err) {
           console.error("Stream error:", err);
-          // Send error text so the client sees it
           controller.enqueue(
             encoder.encode("\n\n[Error: Stream interrupted. Please try again.]")
           );

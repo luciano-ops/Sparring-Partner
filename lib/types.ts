@@ -3,6 +3,7 @@ export interface BriefingSection {
   title: string;
   content: string;
   isComplete: boolean;
+  side: "buyer" | "seller";
 }
 
 export interface GenerateRequest {

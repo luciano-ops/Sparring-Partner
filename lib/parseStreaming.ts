@@ -4,10 +4,10 @@ export function parseBriefingSections(
   rawText: string,
   isStreamComplete: boolean
 ): BriefingSection[] {
-  const sectionRegex = /### (\d{2}) \/ (.+)/g;
+  const sectionRegex = /### ([BS]\d) \/ (.+)/g;
   const sections: BriefingSection[] = [];
   const matches: {
-    number: string;
+    prefix: string;
     title: string;
     contentStart: number;
     matchStart: number;
@@ -16,7 +16,7 @@ export function parseBriefingSections(
   let match: RegExpExecArray | null;
   while ((match = sectionRegex.exec(rawText)) !== null) {
     matches.push({
-      number: match[1],
+      prefix: match[1],
       title: match[2].trim(),
       contentStart: match.index + match[0].length,
       matchStart: match.index,
@@ -30,12 +30,14 @@ export function parseBriefingSections(
 
     const content = rawText.slice(start, end).trim();
     const isComplete = i + 1 < matches.length || isStreamComplete;
+    const side = matches[i].prefix.startsWith("B") ? "buyer" : "seller";
 
     sections.push({
-      number: matches[i].number,
+      number: matches[i].prefix,
       title: matches[i].title,
       content,
       isComplete,
+      side,
     });
   }
 

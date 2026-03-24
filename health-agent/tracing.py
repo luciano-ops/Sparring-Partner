@@ -1,10 +1,10 @@
-"""Judgment SDK tracing — optional, no-op when credentials are missing.
+"""Judgment SDK tracing -- optional, no-op when credentials are missing.
 
 Provides:
-  - get_tracer()   → returns the Judgeval tracer (or None)
-  - observe()      → lazy decorator forwarding to tracer.observe()
-  - wrap_client()  → auto-instrument an LLM client via tracer.wrap()
-  - flush_and_shutdown() → flush buffered spans and shut down the tracer
+  - get_tracer()   -> returns the Judgeval tracer (or None)
+  - observe()      -> lazy decorator forwarding to tracer.observe()
+  - wrap_client()  -> auto-instrument an LLM client via tracer.wrap()
+  - flush_and_shutdown() -> flush buffered spans and shut down the tracer
 
 Tracing activates when JUDGMENT_API_KEY is set and `judgeval` is installed.
 Otherwise every helper is a silent no-op so the rest of the codebase runs
@@ -33,13 +33,12 @@ def _ensure_init():
     try:
         from judgeval import Judgeval
     except ImportError:
-        print("[tracing] judgeval package not installed — tracing disabled")
+        print("[tracing] judgeval package not installed -- tracing disabled")
         return
 
     try:
-        jclient = Judgeval(project_name="Internal-Deep-Research-Agent")
+        jclient = Judgeval(project_name="Internal-Health-Agent")
         _tracer = jclient.tracer.create()
-
         # Register automatic flush on process exit so CLI runs never lose traces
         atexit.register(_atexit_flush)
     except Exception as exc:
@@ -65,8 +64,8 @@ def get_tracer():
 def flush():
     """Flush all buffered spans without killing the tracer.
 
-    Use this between runs in a long-lived process (e.g. Streamlit) so the
-    tracer stays alive for the next run.
+    Use this between runs in a long-lived process so the tracer stays alive
+    for the next run.
     """
     if _tracer is None:
         return
@@ -80,7 +79,7 @@ def flush_and_shutdown():
     """Flush all buffered spans and shut down the tracer.
 
     Only call this when the process is about to exit (CLI mode).
-    For long-lived processes like Streamlit, use flush() instead.
+    For long-lived processes, use flush() instead.
     """
     if _tracer is None:
         return
@@ -98,13 +97,12 @@ def flush_and_shutdown():
 def observe(span_type: str = "function"):
     """Decorator that forwards to ``tracer.observe()`` when available.
 
-    Resolution is *lazy* — the tracer is looked up on the first call, not at
+    Resolution is *lazy* -- the tracer is looked up on the first call, not at
     decoration time, so module-level decorators work even before env vars or
     the ``judgeval`` package are ready.
     """
-
     def decorator(func):
-        _cache: dict = {}  # mutable container → caches the observed fn
+        _cache: dict = {}  # mutable container -- caches the observed fn
 
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
@@ -119,7 +117,6 @@ def observe(span_type: str = "function"):
             return func(*args, **kwargs)
 
         return wrapper
-
     return decorator
 
 
@@ -140,5 +137,5 @@ def wrap_client(client_instance):
     try:
         return t.wrap(client_instance)
     except Exception:
-        # wrap() may not support this client type — fall back silently
+        # wrap() may not support this client type -- fall back silently
         return client_instance
